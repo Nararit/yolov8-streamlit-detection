@@ -11,21 +11,21 @@ import helper
 
 # Setting page layout
 st.set_page_config(
-    page_title="Object Detection using YOLOv8",
-    page_icon="🤖",
+    page_title="Plastic Bottles for Recycling",
+    page_icon="♻",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
 # Main page heading
-st.title("Object Detection using YOLOv8")
+st.title("Classification of Plastic Bottles for Recycling")
 
 # Sidebar
 st.sidebar.header("ML Model Config")
 
 # Model Options
 model_type = st.sidebar.radio(
-    "Select Task", ['Detection', 'Segmentation'])
+    "Select Task", ['Detection', 'Segmentation', 'Classification'])
 
 confidence = float(st.sidebar.slider(
     "Select Model Confidence", 25, 100, 40)) / 100
@@ -35,6 +35,8 @@ if model_type == 'Detection':
     model_path = Path(settings.DETECTION_MODEL)
 elif model_type == 'Segmentation':
     model_path = Path(settings.SEGMENTATION_MODEL)
+elif model_type == 'Classification':
+    model_path = Path(settings.CLASSIFICATION_MODEL)    
 
 # Load Pre-trained ML Model
 try:
@@ -97,14 +99,8 @@ if source_radio == settings.IMAGE:
 elif source_radio == settings.VIDEO:
     helper.play_stored_video(confidence, model)
 
-elif source_radio == settings.WEBCAM:
-    helper.play_webcam(confidence, model)
-
-elif source_radio == settings.RTSP:
-    helper.play_rtsp_stream(confidence, model)
-
-elif source_radio == settings.YOUTUBE:
-    helper.play_youtube_video(confidence, model)
+# elif source_radio == settings.WEBCAM:
+#     helper.play_webcam(confidence, model)
 
 else:
     st.error("Please select a valid source type!")
