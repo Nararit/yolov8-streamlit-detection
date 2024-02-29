@@ -18,24 +18,24 @@ st.set_page_config(
 )
 
 # Main page heading
-st.title("♻ Classification of Plastic Bottles for Recycling")
+st.title("♲ Classification of Plastic Bottles for Recycling")
 
 # Sidebar
 st.sidebar.header("ML Model Config")
 
 # Model Options
 model_type = st.sidebar.radio(
-    "Select Task", ['Detection', 'Classification'])
+    "Select Task", ['Detection', 'Classification', 'ClassificationAll'])
 
 confidence = float(st.sidebar.slider(
     "Select Model Confidence", 25, 100, 40)) / 100
 
 # Selecting Detection Or Segmentation
-if model_type == 'Detection All':
+if model_type == 'Detection':
     model_path = Path(settings.DETECTION_MODEL)
 elif model_type == 'Classification':
     model_path = Path(settings.CLASSIFICATION_MODEL)
-elif model_type == 'Classification All':
+elif model_type == 'ClassificationAll':
     model_path = Path(settings.CLASSIFICATIONALL_MODEL)
 
 # Load Pre-trained ML Model
@@ -46,7 +46,8 @@ except Exception as ex:
     st.error(ex)
 
 st.sidebar.header("Image")
-source_radio = st.sidebar.radio(settings.SOURCES_LIST)
+source_radio = st.sidebar.radio(
+    "Source", settings.SOURCES_LIST)
 
 source_img = None
 # If image is selected
