@@ -18,25 +18,25 @@ st.set_page_config(
 )
 
 # Main page heading
-st.title("♲ Classification of Plastic Bottles for Recycling")
+st.title("♺ Classification of Plastic Bottles for Recycling")
 
 # Sidebar
 st.sidebar.header("ML Model Config")
 
 # Model Options
 model_type = st.sidebar.radio(
-    "Select Task", ['Detection', 'Classification', 'ClassificationAll'])
+    "Select Task", ['DETECTION OBJECTS', 'CLASSIFICATION PET/HDPE'])
 
 confidence = float(st.sidebar.slider(
     "Select Model Confidence", 25, 100, 40)) / 100
 
 # Selecting Detection Or Segmentation
-if model_type == 'Detection':
+if model_type == 'DETECTION OBJECTS':
     model_path = Path(settings.DETECTION_MODEL)
-elif model_type == 'Classification':
+elif model_type == 'CLASSIFICATION PET/HDPE':
     model_path = Path(settings.CLASSIFICATION_MODEL)
-elif model_type == 'ClassificationAll':
-    model_path = Path(settings.CLASSIFICATIONALL_MODEL)
+# elif model_type == 'ClassificationAll':
+#     model_path = Path(settings.CLASSIFICATIONALL_MODEL)
 
 # Load Pre-trained ML Model
 try:
@@ -45,7 +45,7 @@ except Exception as ex:
     st.error(f"Unable to load model. Check the specified path: {model_path}")
     st.error(ex)
 
-st.sidebar.header("Image")
+# st.sidebar.header("ImSourceage")
 source_radio = st.sidebar.radio(
     "Source", settings.SOURCES_LIST)
 
@@ -80,7 +80,7 @@ if source_radio == settings.IMAGE:
             st.image(default_detected_image_path, caption='Classification Image',
                      use_column_width=True)
         else:
-            if st.sidebar.button('Classification Objects'):
+            if st.sidebar.button('Process Image'):
                 res = model.predict(uploaded_image,
                                     conf=confidence
                                     )
