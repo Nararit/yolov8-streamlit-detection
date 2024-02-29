@@ -18,25 +18,25 @@ st.set_page_config(
 )
 
 # Main page heading
-st.title("Classification of Plastic Bottles for Recycling")
+st.title("♻ Classification of Plastic Bottles for Recycling")
 
 # Sidebar
 st.sidebar.header("ML Model Config")
 
 # Model Options
 model_type = st.sidebar.radio(
-    "Select Task", ['Detection', 'Segmentation', 'Classification'])
+    "Select Task", ['Detection', 'Classification'])
 
 confidence = float(st.sidebar.slider(
     "Select Model Confidence", 25, 100, 40)) / 100
 
 # Selecting Detection Or Segmentation
-if model_type == 'Detection':
+if model_type == 'Detection All':
     model_path = Path(settings.DETECTION_MODEL)
-elif model_type == 'Segmentation':
-    model_path = Path(settings.SEGMENTATION_MODEL)
 elif model_type == 'Classification':
-    model_path = Path(settings.CLASSIFICATION_MODEL)    
+    model_path = Path(settings.CLASSIFICATION_MODEL)
+elif model_type == 'Classification All':
+    model_path = Path(settings.CLASSIFICATIONALL_MODEL)
 
 # Load Pre-trained ML Model
 try:
@@ -45,9 +45,8 @@ except Exception as ex:
     st.error(f"Unable to load model. Check the specified path: {model_path}")
     st.error(ex)
 
-st.sidebar.header("Image/Video Config")
-source_radio = st.sidebar.radio(
-    "Select Source", settings.SOURCES_LIST)
+st.sidebar.header("Image")
+source_radio = st.sidebar.radio(settings.SOURCES_LIST)
 
 source_img = None
 # If image is selected
@@ -77,19 +76,19 @@ if source_radio == settings.IMAGE:
             default_detected_image_path = str(settings.DEFAULT_DETECT_IMAGE)
             default_detected_image = PIL.Image.open(
                 default_detected_image_path)
-            st.image(default_detected_image_path, caption='Detected Image',
+            st.image(default_detected_image_path, caption='Classification Image',
                      use_column_width=True)
         else:
-            if st.sidebar.button('Detect Objects'):
+            if st.sidebar.button('Classification Objects'):
                 res = model.predict(uploaded_image,
                                     conf=confidence
                                     )
                 boxes = res[0].boxes
                 res_plotted = res[0].plot()[:, :, ::-1]
-                st.image(res_plotted, caption='Detected Image',
+                st.image(res_plotted, caption='Classification Image',
                          use_column_width=True)
                 try:
-                    with st.expander("Detection Results"):
+                    with st.expander("Classification Results"):
                         for box in boxes:
                             st.write(box.data)
                 except Exception as ex:
