@@ -84,6 +84,12 @@ if source_radio == settings.IMAGE:
                 res = model.predict(uploaded_image,
                                     conf=confidence
                                     )
+                names = model.names
+                
+                for r in res:
+                    for c in r.boxes.cls:
+                        st.write(names[int(c)])
+                        
                 boxes = res[0].boxes
                 res_plotted = res[0].plot()[:, :, ::-1]
                 st.image(res_plotted, caption='Classification Image',
