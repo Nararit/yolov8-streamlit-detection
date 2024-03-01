@@ -92,9 +92,6 @@ if source_radio == settings.IMAGE:
                          use_column_width=True)
                 try:
                     with st.expander("Classification Results"):
-                        for box in boxes:
-                            st.write(box.data)
-                    with st.expander("Classification Results"):
                         for r in res:
                             for c in r.boxes.cls:
                                 st.write(names[int(c)])
