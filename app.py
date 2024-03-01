@@ -85,12 +85,8 @@ if source_radio == settings.IMAGE:
                                     conf=confidence
                                     )
                 names = model.names
-                
-                for r in res:
-                    for c in r.boxes.cls:
-                        st.write(names[int(c)])
-                        
                 boxes = res[0].boxes
+                
                 res_plotted = res[0].plot()[:, :, ::-1]
                 st.image(res_plotted, caption='Classification Image',
                          use_column_width=True)
@@ -98,6 +94,10 @@ if source_radio == settings.IMAGE:
                     with st.expander("Classification Results"):
                         for box in boxes:
                             st.write(box.data)
+                    with st.expander("Classification Results"):
+                        for r in res:
+                            for c in r.boxes.cls:
+                                st.write(names[int(c)])
                 except Exception as ex:
                     # st.write(ex)
                     st.write("No image is uploaded yet!")
